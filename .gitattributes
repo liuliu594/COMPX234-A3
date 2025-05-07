@@ -77,7 +77,18 @@ def handle_client(client_socket, tuple_space, stats):
             if len(header) != 3:
                 break
             msg_length = int(header.decode())
-            
+
+            message_body = b''
+            remaining = msg_length
+            while remaining > 0:
+                chunk = client_socket.recv(remaining)
+                if not chunk:
+                    break
+                message_body += chunk
+                remaining -= len(chunk)
+            if remaining > 0:
+                break
+                
     except Exception as e:
         print(f"Client error: {e}")
     finally:
