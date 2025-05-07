@@ -95,7 +95,20 @@ def handle_client(client_socket, tuple_space, stats):
             command = parts[0]
             key = parts[1] if len(parts) > 1 else ""
             value = parts[2] if len(parts) > 2 else ""
-                
+            response = ""
+            if command == 'P':
+                stats.increment_ops('PUT')
+                if not value:
+                    response = "ERR invalid PUT request"
+                else:
+                    success = tuple_space.put(key, value)
+                    if success:
+                        response = f"OK({key}, {value}) added"
+                        stats.record_tuple_addition(key, value)
+                    else:
+                        response = f"ERR {key} already exists"
+                        stats.add_error('exists')
+                            
     except Exception as e:
         print(f"Client error: {e}")
     finally:
