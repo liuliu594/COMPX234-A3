@@ -65,3 +65,10 @@ class Statistics:
             self.total_key_length -= len(key)
             self.total_value_length -= len(value)
             self.tuple_count -= 1
+def handle_client(client_socket, tuple_space, stats):
+    try:
+        
+    except Exception as e:
+        print(f"Client error: {e}")
+    finally:
+        client_socket.close()
