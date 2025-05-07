@@ -117,7 +117,16 @@ def handle_client(client_socket, tuple_space, stats):
                 else:
                     response = f"ERR {key} does not exist"
                     stats.add_error('not_exists')  
-                                  
+            elif command == 'R':
+                stats.increment_ops('READ')
+                value = tuple_space.read(key)
+                if value is not None:
+                    response = f"OK({key}, {value}) read"
+                else:
+                    response = f"ERR {key} does not exist"
+                    stats.add_error('not_exists')
+            else:
+                response = "ERR invalid command"                      
     except Exception as e:
         print(f"Client error: {e}")
     finally:
