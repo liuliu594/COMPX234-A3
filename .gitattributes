@@ -108,7 +108,16 @@ def handle_client(client_socket, tuple_space, stats):
                     else:
                         response = f"ERR {key} already exists"
                         stats.add_error('exists')
-                            
+            elif command == 'G':
+                stats.increment_ops('GET')
+                value = tuple_space.get(key)
+                if value is not None:
+                    response = f"OK({key}, {value}) removed"
+                    stats.record_tuple_removal(key, value)
+                else:
+                    response = f"ERR {key} does not exist"
+                    stats.add_error('not_exists')  
+                                  
     except Exception as e:
         print(f"Client error: {e}")
     finally:
