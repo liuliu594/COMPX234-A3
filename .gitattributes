@@ -20,3 +20,15 @@ class TupleSpace:
                 return False
             self.data[key] = value
             return True
+class Statistics:
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.total_clients = 0
+        self.total_operations = 0
+        self.read_count = 0
+        self.get_count = 0
+        self.put_count = 0
+        self.errors = {'exists': 0, 'not_exists': 0}
+        self.total_key_length = 0
+        self.total_value_length = 0
+        self.tuple_count = 0
