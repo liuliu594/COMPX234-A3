@@ -67,7 +67,17 @@ class Statistics:
             self.tuple_count -= 1
 def handle_client(client_socket, tuple_space, stats):
     try:
-        
+         while True:
+            header = b''
+            while len(header) < 3:
+                chunk = client_socket.recv(3 - len(header))
+                if not chunk:
+                    break
+                header += chunk
+            if len(header) != 3:
+                break
+            msg_length = int(header.decode())
+            
     except Exception as e:
         print(f"Client error: {e}")
     finally:
