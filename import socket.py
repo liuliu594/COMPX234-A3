@@ -67,3 +67,5 @@ def main():
         response = client_socket.recv(resp_length).decode()
         print(f"{line.strip()}: {response}")
     client_socket.close()
+if __name__ == "__main__":
+    main()
