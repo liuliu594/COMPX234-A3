@@ -47,5 +47,10 @@ def main():
         if not valid:
             print(f"Invalid line: {line.strip()} - {data}")
             continue
-
+        if data[0] == 'PUT':
+            _, key, value = data
+            msg_body = f"P {key} {value}"
+        else:
+            op, key = data
+            msg_body = f"{'R' if op == 'READ' else 'G'} {key}"
             
