@@ -22,3 +22,11 @@ def validate_line(line):
             return False, f"{op} requires key"
         key = parts[1]
         return True, (op, key)
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: client.py <host> <port> <request_file>")
+        return
+
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+    file_path = sys.argv[3]    
