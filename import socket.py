@@ -41,4 +41,11 @@ def main():
         client_socket.connect((host, port))
     except ConnectionRefusedError:
         print("Connection refused")
-        return    
+        return
+    for line in lines:
+        valid, data = validate_line(line)
+        if not valid:
+            print(f"Invalid line: {line.strip()} - {data}")
+            continue
+
+            
