@@ -57,3 +57,13 @@ def main():
         if msg_length > 999:
             print(f"Message too long: {line.strip()}")
             continue    
+        full_msg = f"{msg_length:03d}{msg_body}".encode()
+        client_socket.sendall(full_msg)
+        header = client_socket.recv(3)
+        if not header:
+            print("Server closed connection")
+            break
+        resp_length = int(header.decode())
+        response = client_socket.recv(resp_length).decode()
+        print(f"{line.strip()}: {response}")
+    client_socket.close()
