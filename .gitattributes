@@ -148,3 +148,15 @@ def print_stats(stats):
             print(f"Total Operations: {stats.total_operations}")
             print(f"READs: {stats.read_count}, GETs: {stats.get_count}, PUTs: {stats.put_count}")
             print(f"Errors: {stats.errors}\n")
+def main():
+    port = 51234
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('', port))
+    server_socket.listen(5)
+    print(f"Server listening on port {port}")
+
+    tuple_space = TupleSpace()
+    stats = Statistics()
+
+    stats_thread = threading.Thread(target=print_stats, args=(stats,), daemon=True)
+    stats_thread.start()
