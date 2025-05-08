@@ -53,4 +53,7 @@ def main():
         else:
             op, key = data
             msg_body = f"{'R' if op == 'READ' else 'G'} {key}"
-            
+        msg_length = len(msg_body)
+        if msg_length > 999:
+            print(f"Message too long: {line.strip()}")
+            continue    
