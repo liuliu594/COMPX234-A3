@@ -29,4 +29,10 @@ def main():
 
     host = sys.argv[1]
     port = int(sys.argv[2])
-    file_path = sys.argv[3]    
+    file_path = sys.argv[3]
+    try:
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print(f"File {file_path} not found")
+        return    
