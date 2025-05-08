@@ -35,4 +35,10 @@ def main():
             lines = f.readlines()
     except FileNotFoundError:
         print(f"File {file_path} not found")
+        return
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        client_socket.connect((host, port))
+    except ConnectionRefusedError:
+        print("Connection refused")
         return    
