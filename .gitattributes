@@ -160,3 +160,16 @@ def main():
 
     stats_thread = threading.Thread(target=print_stats, args=(stats,), daemon=True)
     stats_thread.start()
+    try:
+        while True:
+            client_socket, addr = server_socket.accept()
+            stats.increment_clients()
+            client_thread = threading.Thread(
+                target=handle_client,
+                args=(client_socket, tuple_space, stats)
+            )
+            client_thread.start()
+    except KeyboardInterrupt:
+        print("Shutting down server")
+    finally:
+        server_socket.close()
