@@ -23,6 +23,22 @@ class UDPServer:
                 error_msg = f"ERR {filename} NOT_FOUND"
                 self.server_socket.sendto(error_msg.encode(), client_address)
                 return
+            # get size of file
+            file_size = os.path.getsize(filename)
+            # select a data port for data transmission
+            data_port = randint(50000, 51000)
+
+            # Create a new UDP socket for data transmission
+            data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            # Bind the data socket to the specified address and port
+            data_socket.bind(('0.0.0.0', data_port))
+            data_socket.settimeout(5)
+
+            # Build the confirmation message and send it to the client
+            ok_msg = f"OK {filename} SIZE {file_size} PORT {data_port}"
+            self.server_socket.sendto(ok_msg.encode(), client_address)
+
+
             
         except Exception:
             pass
