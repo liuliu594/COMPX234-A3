@@ -125,5 +125,14 @@ class UDPServer:
             pass
         finally:
             self.server_socket.close()
-            print("The server has been shut down.")    
+            print("The server has been shut down.") 
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("usage: python server.py 51234")
+        sys.exit(1)
+
+    port = sys.argv[1]
+    server = UDPServer(port)
+    server.run()
             
