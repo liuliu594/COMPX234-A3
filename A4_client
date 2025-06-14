@@ -43,5 +43,26 @@ class UDPClient:
         if not os.access(desktop, os.W_OK):
             print(f" File{filename} Download failed")
             return False
+        download_msg = f"DOWNLOAD {filename}"
+        response = self.send_and_receive(download_msg, (self.server_host, self.server_port))
 
-        print(f"\nStart downloading the file: {filename}")        
+        if not response:#Request to download the file
+            print(f"No response from the server was received and the file {filename} download failed")#The server did not respond.
+            return False
+
+        file_size = 0
+        if response.startswith("OK"):
+            parts = response.split()
+            try:
+                size_pos = parts.index("SIZE") + 1
+                port_pos = parts.index("PORT") + 1
+                file_size = int(parts[size_pos])
+                data_port = int(parts[port_pos])
+                print(f"Total file size: {file_size} bytes")
+            except (ValueError, IndexError):
+                print(f"The server responded with a format error, and the file {filename} failed to download")#Format error
+                return False
+        elif response.startswith("ERR"):
+            print(f"The server file does not exist and the file {filename} has failed to be downloaded")
+            return False
+        print(f"\nStart downloading the file: {filename}")      #The file does not exist.  
