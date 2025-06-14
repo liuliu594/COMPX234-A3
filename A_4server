@@ -16,7 +16,14 @@ class UDPServer:
 
     def handle_client():
         try:
+            # determine whether the file exists in the current system
+            if not os.path.exists(filename):
 
+                # If not, build an error message 
+                error_msg = f"ERR {filename} NOT_FOUND"
+                self.server_socket.sendto(error_msg.encode(), client_address)
+                return
+            
         except Exception:
             pass
 
