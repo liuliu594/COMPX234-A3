@@ -73,6 +73,16 @@ class UDPServer:
                                     continue
                                 f.seek(start)
                                 data = f.read(end - start + 1)
+                                if len(data) == 0:
+                                    # If the read data is empty, build an error and send it to the client
+                                    error_msg = f"ERR {filename} EMPTY_DATA START {start} END {end}"
+                                    data_socket.sendto(error_msg.encode(), client_address)
+                                    continue
+                                base64_data = base64.b64encode(data).decode()
+
+                                # Build the response message and send it to the client
+                                response_msg = f"FILE {filename} OK START {start} END {end} DATA {base64_data}"
+                                data_socket.sendto(response_msg.encode(), client_address)
 
 
                             except (ValueError, IndexError):
