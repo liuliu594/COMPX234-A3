@@ -1,6 +1,7 @@
 import socket
 import time
 import os
+from random import randint
 
 class UDPClient:
     def __init__(self, server_host, server_port, file_list_path):
@@ -65,4 +66,24 @@ class UDPClient:
         elif response.startswith("ERR"):
             print(f"The server file does not exist and the file {filename} has failed to be downloaded")
             return False
-        print(f"\nStart downloading the file: {filename}")      #The file does not exist.  
+        print(f"\nStart downloading the file: {filename}")      #The file does not exist.
+        try:
+            with open(save_path, 'wb') as f:
+                downloaded = 0
+                block_size = 800
+                data_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                data_socket.settimeout(self.current_timeout / 1000)
+
+                print(f"0.00% (0/{file_size} byte)", end="", flush=True)
+                while downloaded < file_size:
+                    end = min(downloaded + block_size - 1, file_size - 1)
+                    request_msg = f"FILE {filename} GET START {downloaded} END {end}"
+
+                    data_response = self.send_and_receive(request_msg, (self.server_host, data_port))
+                
+
+                
+
+        except Exception as e:
+            print(f"\n {str(e)}，fail {filename} download failed")
+            return False  
