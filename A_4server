@@ -16,7 +16,7 @@ class UDPServer:
         print(f"The server starts up and listens to the port {self.server_port}")
     
 
-    def handle_client():
+    def handle_client(self, filename, client_address):
         try:
             # determine whether the file exists in the current system
             if not os.path.exists(filename):
@@ -63,7 +63,17 @@ class UDPServer:
 
                         elif parts[0] == "FILE" and parts[1] == filename and parts[2] == "GET":
                             try:
-                                
+                                # Find the positions of the starting and ending indexes in the request
+                                start_index = parts.index("START") + 1
+                                end_index = parts.index("END") + 1
+                                start = int(parts[start_index])
+                                end = int(parts[end_index])
+
+                                if start < 0 or end >= file_size or start > end:
+                                    continue
+                                f.seek(start)
+                                data = f.read(end - start + 1)
+
 
                             except (ValueError, IndexError):
                                 continue
