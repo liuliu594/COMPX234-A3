@@ -1,0 +1,24 @@
+import socket
+import sys
+import base64
+
+class UDPServer:
+    def __init__(self, port):
+        # Initialize the server port
+        self.server_port = int(port)
+        # Create a UDP socket object
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Bind the socket to the specified address and port
+        self.server_socket.bind(('0.0.0.0', self.server_port))
+        # Output the server startup information
+        print(f"The server starts up and listens to the port {self.server_port}")
+    
+
+    def handle_client():
+        try:
+
+        except Exception:
+            pass
+
+        
+            
