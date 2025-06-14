@@ -10,3 +10,22 @@ class UDPClient:
         self.max_retries = 5
         self.current_timeout = 2000
         self.retry_sleep = 1
+        
+    def send_and_receive(self, message, address):
+        retries = 0
+        while retries <= self.max_retries:
+            try:
+                self.client_socket.sendto(message.encode(), address)
+                response, _ = self.client_socket.recvfrom(65535)
+                return response.decode().strip()
+            except socket.timeout:
+                retries += 1
+                wait_time = self.retry_sleep * (2 ** (retries - 1))
+                self.current_timeout *= 2
+                self.client_socket.settimeout(self.current_timeout / 1000)
+                time.sleep(wait_time)
+                if retries > self.max_retries:
+                    return None
+            except (OSError, UnicodeDecodeError) as e:
+                print(f"通信异常: {e}")
+                return None
