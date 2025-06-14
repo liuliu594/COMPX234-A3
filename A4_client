@@ -81,7 +81,15 @@ class UDPClient:
 
                     data_response = self.send_and_receive(request_msg, (self.server_host, data_port))
                 
+                    if not data_response:
+                        print(f"\nThe data reception timeout occurred and the file {filename} failed to download")
+                        data_socket.close()
+                        return False
 
+                    if data_response.startswith("ERR"):
+                        print(f"\nThe server returned an error and the file {filename} failed to download")
+                        data_socket.close()
+                        return False
                 
 
         except Exception as e:
