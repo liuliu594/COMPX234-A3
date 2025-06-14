@@ -90,7 +90,13 @@ class UDPClient:
                         print(f"\nThe server returned an error and the file {filename} failed to download")
                         data_socket.close()
                         return False
-                
+                    if data_response.startswith("FILE") and "OK" in data_response:
+                        parts = data_response.split()
+                        
+                    else:
+                        print(f"\nThe response format is unknown. The file {filename} failed to download")
+                        data_socket.close()
+                        return False
 
         except Exception as e:
             print(f"\n {str(e)}，fail {filename} download failed")
