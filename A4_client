@@ -3,7 +3,7 @@ import time
 import os
 from random import randint
 import base64
-
+import sys
 class UDPClient:
     def __init__(self, server_host, server_port, file_list_path):
         # Initialize the client parameters
