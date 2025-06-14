@@ -1,3 +1,12 @@
 import socket
 class UDPClient:
-    def
+    def __init__(self, server_host, server_port, file_list_path):
+        # Initialize the client parameters
+        self.server_host = server_host
+        self.server_port = int(server_port)
+        self.file_list_path = file_list_path
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client_socket.settimeout(2)
+        self.max_retries = 5
+        self.current_timeout = 2000
+        self.retry_sleep = 1
