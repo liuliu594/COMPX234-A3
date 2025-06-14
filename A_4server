@@ -1,6 +1,8 @@
 import socket
 import sys
 import base64
+import os
+from random import randint
 
 class UDPServer:
     def __init__(self, port):
@@ -39,7 +41,35 @@ class UDPServer:
             self.server_socket.sendto(ok_msg.encode(), client_address)
 
 
+            # Open the file in binary read mode
+            with open(filename, 'rb') as f:
+                is_running = True
+                while is_running:
+                    try:
+                        # Receive requests from the client
+                        request, _ = data_socket.recvfrom(65535)
+                        request_str = request.decode().strip()
+
+                        # Split the request string
+                        parts = request_str.split()
+                        if len(parts) == 0:
+                            continue
+
+                        if parts[0] == "FILE" and parts[-1] == "CLOSE":
+                            # Handle the client's closing request
+                            close_ok_msg = f"FILE {filename} CLOSE_OK"
+                            data_socket.sendto(close_ok_msg.encode(), client_address)
+                            is_running = False
+
+                        
+
+                    except socket.timeout:
+                        continue
+                    except Exception:
+                        continue
+
             
+            data_socket.close()
         except Exception:
             pass
 
