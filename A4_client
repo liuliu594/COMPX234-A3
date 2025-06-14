@@ -1,5 +1,6 @@
 import socket
 import time
+
 class UDPClient:
     def __init__(self, server_host, server_port, file_list_path):
         # Initialize the client parameters
@@ -28,5 +29,6 @@ class UDPClient:
                 if retries > self.max_retries:
                     return None
             except (OSError, UnicodeDecodeError) as e:
-                print(f"通信异常: {e}")
+                print(f"Communication anomaly: {e}")
                 return None
+            
