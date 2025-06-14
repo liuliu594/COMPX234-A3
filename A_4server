@@ -61,7 +61,12 @@ class UDPServer:
                             data_socket.sendto(close_ok_msg.encode(), client_address)
                             is_running = False
 
-                        
+                        elif parts[0] == "FILE" and parts[1] == filename and parts[2] == "GET":
+                            try:
+                                
+
+                            except (ValueError, IndexError):
+                                continue
 
                     except socket.timeout:
                         continue
