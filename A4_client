@@ -1,5 +1,6 @@
 import socket
 import time
+import os
 
 class UDPClient:
     def __init__(self, server_host, server_port, file_list_path):
@@ -31,4 +32,16 @@ class UDPClient:
             except (OSError, UnicodeDecodeError) as e:
                 print(f"Communication anomaly: {e}")
                 return None
-            
+    def download_file(self, filename, data_port):
+        # Build the file saving path
+        desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+        save_path = os.path.join(desktop, filename)
+
+        # Make sure the directory exists and is writable
+        if not os.path.exists(desktop):
+            os.makedirs(desktop)
+        if not os.access(desktop, os.W_OK):
+            print(f" File{filename} Download failed")
+            return False
+
+        print(f"\nStart downloading the file: {filename}")        
